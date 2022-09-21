@@ -28,7 +28,7 @@ exports.listUsers = async (req, res) => {
         let userList = await Users.find({});
         if (userList.length > 0) {
             console.log("inside listUsers")
-        res.status(200).send(await Users.find({}));
+        res.status(200).send({userList});
         } else {
             console.log("Nothing to display")
             res.status(400).send({error: "request failed, no users to display"})
