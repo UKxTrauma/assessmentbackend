@@ -1,7 +1,7 @@
 const { Router } = require("express")
 const userRouter = Router()
 const { listUsers, addUser, userDelete, login, nameEdit, emailEdit, passwordEdit } = require("./userController")
-const { hashPassword, tokenCheck } = require("../middleware")
+const { hashPassword, tokenCheck } = require("../../middleware")
 
 userRouter.get("/user/list", listUsers)
 
