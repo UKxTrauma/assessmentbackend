@@ -34,7 +34,6 @@ exports.listUsers = async (req, res) => {
             res.status(400).send({error: "request failed, no users to display"})
         }
     } catch (error) {
-        console.log("error in listUsers")
         res.status(500).send({error:"internal server error"})
         console.log(error)
     }
