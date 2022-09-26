@@ -16,17 +16,35 @@ exports.hashPassword = async (req, res, next) => {
     }
 }
 
+// exports.tokenCheck = async (req, res, next) => {
+//     try {
+//         const token = req.header("Authorization").replace("Bearer ", "");
+//         const decoded = jwt.verify(token, process.env.SECRET);
+//         const user = await Users.findOne({ _id: decoded._id });
+//         if (!user) {
+//             throw new Error("User does not exist")
+//         }
+//         req.user = user
+//         next()
+//     } catch (error) {
+//         res.status(500).send({ error: "Please log in" })
+//     }
+// }
+
 exports.tokenCheck = async (req, res, next) => {
-    try {
+    if (req.header("Authorization")) {
+      console.log('Token passed in headers')
+      try {
         const token = req.header("Authorization").replace("Bearer ", "");
         const decoded = jwt.verify(token, process.env.SECRET);
-        const user = await Users.findOne({ _id: decoded._id });
-        if (!user) {
-            throw new Error("User does not exist")
-        }
-        req.user = user
-        next()
-    } catch (error) {
-        res.status(500).send({ error: "Please log in" })
+        req.user = await Users.findById(decoded._id);
+        next();
+      } catch (error) {
+        console.log(error);
+        res.status(500).send({ error: error.message });
+      }
+    } else {
+      console.log('No token passed in headers')
+      res.status(500).send({ error: 'No token passed in headers' });
     }
-}
+  };
