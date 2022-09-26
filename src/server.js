@@ -15,7 +15,7 @@ app.get('/getFruity', (req, res) => {
     const API = "https://www.fruityvice.com/api/fruit/all";
     axios(API)
       .then(response => {
-        console.log(response.data)
+        // console.log(response.data)
         res.json(response.data)
       }).catch(err => {
         res.send('errr!!!')

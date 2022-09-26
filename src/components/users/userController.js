@@ -1,4 +1,5 @@
 const Users = require("./userModel");
+const jwt = require("jsonwebtoken");
 
 exports.addUser = async (req, res) => {
     try {
@@ -97,8 +98,20 @@ exports.login = async (req, res) => {
     try {
         const user = await Users.filterByCredentials(email, password)
         const token = user.generateAuthToken()
-        res.status(200).send({ user : user.name, token });
+        res.status(200).send({ name : user.name, token });
     } catch (error) {
         res.status(400).send({ error: error.message });
     }
 }
+
+exports.findUser = async (req, res) => {
+    try{
+      const token = req.header("Authorization").replace("Bearer ", "");
+      const decoded = jwt.verify(token, process.env.SECRET);
+      const user = await Users.findById(decoded._id);
+      res.status(200).send({ name: user  });
+    } catch (error) {
+      console.log(error);
+      res.status(500).send({ error: error.message });
+    }
+  }
